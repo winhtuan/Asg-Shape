@@ -30,6 +30,13 @@ public class ShapeList {
         shapes.add(s);
         saveToFile();
     }
+    
+    public static void removeShape(int index) {
+        if (index >= 0 && index < shapes.size()) {
+            shapes.remove(index);
+        }
+        saveToFile();
+    }
 
     public static void loadFromFile() throws FileNotFoundException, IOException {
         BufferedReader file = new BufferedReader(new FileReader(FILE_NAME));
@@ -74,22 +81,22 @@ public class ShapeList {
             for (Shape shape : shapes) {
                 if (shape instanceof Circle) {
                     Circle circle = (Circle) shape;
-                    bw.write(String.format("TwoDimensionalShape, Circle, %.2f", circle.getRadius()));
+                    bw.write(String.format("2D, Circle, %.2f", circle.getRadius()));
                 } else if (shape instanceof Square) {
                     Square square = (Square) shape;
-                    bw.write(String.format("TwoDimensionalShape, Square, %.2f", square.getSide()));
+                    bw.write(String.format("2D, Square, %.2f", square.getSide()));
                 } else if (shape instanceof Triangle) {
                     Triangle triangle = (Triangle) shape;
-                    bw.write(String.format("TwoDimensionalShape, Triangle, %.2f, %.2f", triangle.getBase(), triangle.getHeight()));
+                    bw.write(String.format("2D, Triangle, %.2f, %.2f", triangle.getBase(), triangle.getHeight()));
                 } else if (shape instanceof Sphere) {
                     Sphere sphere = (Sphere) shape;
-                    bw.write(String.format("ThreeDimensionalShape, Sphere, %.2f", sphere.getRadius()));
+                    bw.write(String.format("3D, Sphere, %.2f", sphere.getRadius()));
                 } else if (shape instanceof Cube) {
                     Cube cube = (Cube) shape;
-                    bw.write(String.format("ThreeDimensionalShape, Cube, %.2f", cube.getSide()));
+                    bw.write(String.format("3D, Cube, %.2f", cube.getSide()));
                 } else if (shape instanceof Tetrahedron) {
                     Tetrahedron tetrahedron = (Tetrahedron) shape;
-                    bw.write(String.format("ThreeDimensionalShape, Tetrahedron, %.2f", tetrahedron.getSide()));
+                    bw.write(String.format("3D, Tetrahedron, %.2f", tetrahedron.getSide()));
                 }
                 bw.newLine();
             }
