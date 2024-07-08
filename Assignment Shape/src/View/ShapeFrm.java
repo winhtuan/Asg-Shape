@@ -1,24 +1,21 @@
 package View;
 
-import Form.FormCircle;
-import Form.FormSquare;
-import Form.FormWindow;
-import Form.FormSphere;
-import Form.FormCube;
-import Form.FormTetrahedron;
-import Form.FormTriangle;
+import Form.*;
 import Swing.EventNavigationBar;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 
 public class ShapeFrm extends javax.swing.JFrame {
 
+    private FormWindow formWindow;
+
     public ShapeFrm() {
         initComponents();
         getContentPane().setBackground(new Color(240, 240, 240));
+        formWindow = new FormWindow();
         ImageIcon icon = new ImageIcon(getClass().getResource("/Icon/Logo.png"));
         this.setIconImage(icon.getImage());
-        
+
         navigationBar.addItem(new ImageIcon(getClass().getResource("/Icon/Circle.png")));
         navigationBar.addItem(new ImageIcon(getClass().getResource("/Icon/Square.png")));
         navigationBar.addItem(new ImageIcon(getClass().getResource("/Icon/Triangle.png")));
@@ -29,6 +26,7 @@ public class ShapeFrm extends javax.swing.JFrame {
         navigationBar.addEvent(new EventNavigationBar() {
             @Override
             public void beforeSelected(int index) {
+
                 if (index == 0) {
                     panelTransaction1.display(new FormCircle(), navigationBar.getAnimator());
                 } else if (index == 1) {
@@ -45,9 +43,10 @@ public class ShapeFrm extends javax.swing.JFrame {
                     panelTransaction1.display(new FormTetrahedron(), navigationBar.getAnimator());
                 }
             }
+
             @Override
             public void afterSelected(int index) {
-
+                
             }
         });
     }

@@ -30,7 +30,7 @@ public class ShapeList {
         shapes.add(s);
         saveToFile();
     }
-    
+
     public static void removeShape(int index) {
         if (index >= 0 && index < shapes.size()) {
             shapes.remove(index);
@@ -39,45 +39,62 @@ public class ShapeList {
     }
 
     public static void loadFromFile() throws FileNotFoundException, IOException {
-        BufferedReader file = new BufferedReader(new FileReader(FILE_NAME));
-        String line;
-        while ((line = file.readLine()) != null) {
-            String[] data = line.split(", ");
+        try (BufferedReader file = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            shapes.clear(); // Clear the list before loading new data
 
-            if (data.length > 2) {
-                String shapeType = data[1];
-                double value;
+            while ((line = file.readLine()) != null) {
+                String[] data = line.split(", ");
 
-                if (shapeType.equals("Circle")) {
-                    value = Double.parseDouble(data[2]);
-                    shapes.add(new Circle(value));
-                } else if (shapeType.equals("Square")) {
-                    value = Double.parseDouble(data[2]);
-                    shapes.add(new Square(value));
-                } else if (shapeType.equals("Triangle")) {
-                    double base = Double.parseDouble(data[2]);
-                    double height = Double.parseDouble(data[3]);
-                    shapes.add(new Triangle(base, height));
-                } else if (shapeType.equals("Sphere")) {
-                    value = Double.parseDouble(data[2]);
-                    shapes.add(new Sphere(value));
-                } else if (shapeType.equals("Cube")) {
-                    value = Double.parseDouble(data[2]);
-                    shapes.add(new Cube(value));
-                } else if (shapeType.equals("Tetrahedron")) {
-                    value = Double.parseDouble(data[2]);
-                    shapes.add(new Tetrahedron(value));
+                if (data.length > 2) {
+                    String shapeType = data[1];
+                    double value;
+
+                    switch (shapeType) {
+                        case "Circle":
+                            value = Double.parseDouble(data[2]);
+                            shapes.add(new Circle(value));
+                            break;
+                        case "Square":
+                            value = Double.parseDouble(data[2]);
+                            shapes.add(new Square(value));
+                            break;
+                        case "Triangle":
+                            double base = Double.parseDouble(data[2]);
+                            double height = Double.parseDouble(data[3]);
+                            shapes.add(new Triangle(base, height));
+                            break;
+                        case "Sphere":
+                            value = Double.parseDouble(data[2]);
+                            shapes.add(new Sphere(value));
+                            break;
+                        case "Cube":
+                            value = Double.parseDouble(data[2]);
+                            shapes.add(new Cube(value));
+                            break;
+                        case "Tetrahedron":
+                            value = Double.parseDouble(data[2]);
+                            shapes.add(new Tetrahedron(value));
+                            break;
+                        default:
+                            System.out.println("Invalid shape type: " + shapeType);
+                            break;
+                    }
                 } else {
-                    System.out.println("Invalid shape type: " + shapeType);
+                    System.out.println("Invalid Input " + line);
                 }
-            } else {
-                System.out.println("Invalid Input " + line);
             }
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + FILE_NAME);
+        } catch (IOException e) {
+            System.out.println("Error reading from file: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Error parsing number: " + e.getMessage());
         }
     }
 
     public static void saveToFile() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME, false))) {
             for (Shape shape : shapes) {
                 if (shape instanceof Circle) {
                     Circle circle = (Circle) shape;

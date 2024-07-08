@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
  * @author RAVEN
  */
 public class FormWindow extends TransitionsForm {
-
+    
     private DefaultTableModel tableModel;
 
     public FormWindow() {
@@ -27,11 +27,10 @@ public class FormWindow extends TransitionsForm {
         try {
             ShapeList.loadFromFile();
         } catch (IOException ex) {
-            Logger.getLogger(FormWindow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FormWindow.class.getName()).log(Level.SEVERE, "Failed to load shapes from file", ex);
         }
         tableModel = (DefaultTableModel) tbView.getModel();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -198,7 +197,7 @@ public class FormWindow extends TransitionsForm {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewActionPerformed
-        tableModel.setRowCount(0); // clear the table
+        tableModel.setRowCount(0);
         for (Shape shape : ShapeList.getAllShapes()) {
             ShowShapes(shape);
         }
@@ -210,46 +209,42 @@ public class FormWindow extends TransitionsForm {
 
     private void ShowShapes(Shape shape) {
         var row = new Object[4];
+
+        if (shape instanceof TwoDimensionalShape) {
+            row[0] = "2D";
+        } else if (shape instanceof ThreeDimensionalShape) {
+            row[0] = "3D";
+        }
+
         if (shape instanceof Circle) {
             Circle circle = (Circle) shape;
-            row[0] = "2D";
             row[1] = "Circle";
             row[2] = circle.getRadius();
-            row[3] = null;
         } else if (shape instanceof Square) {
             Square square = (Square) shape;
-            row[0] = "2D";
             row[1] = "Square";
             row[2] = square.getSide();
-            row[3] = null;
         } else if (shape instanceof Triangle) {
             Triangle triangle = (Triangle) shape;
-            row[0] = "2D";
             row[1] = "Triangle";
             row[2] = triangle.getBase();
             row[3] = triangle.getHeight();
         } else if (shape instanceof Sphere) {
             Sphere sphere = (Sphere) shape;
-            row[0] = "3D";
             row[1] = "Sphere";
             row[2] = sphere.getRadius();
-            row[3] = null;
         } else if (shape instanceof Cube) {
             Cube cube = (Cube) shape;
-            row[0] = "3D";
             row[1] = "Cube";
             row[2] = cube.getSide();
-            row[3] = null;
         } else if (shape instanceof Tetrahedron) {
             Tetrahedron tetrahedron = (Tetrahedron) shape;
-            row[0] = "3D";
             row[1] = "Tetrahedron";
             row[2] = tetrahedron.getSide();
-            row[3] = null;
         }
+
         tableModel.addRow(row);
     }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClear;
